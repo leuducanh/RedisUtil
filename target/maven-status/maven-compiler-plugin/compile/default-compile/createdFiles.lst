@@ -1,0 +1,4 @@
+redis/manager/config/RedisConfig.class
+redis/App.class
+redis/manager/config/config_file_reader/MultiTypeFileRedisPropertyReader.class
+redis/manager/RedisConnectionManager.class
