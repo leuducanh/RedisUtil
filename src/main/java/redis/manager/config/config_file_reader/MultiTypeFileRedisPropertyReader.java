@@ -90,6 +90,7 @@ public class MultiTypeFileRedisPropertyReader {
                     e.printStackTrace();
                 }
             }
+            redisConfig.setName(sectionName);
             redisConfigs.add(redisConfig);
         }
         return redisConfigs;

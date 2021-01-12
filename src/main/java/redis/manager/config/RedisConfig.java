@@ -1,5 +1,7 @@
 package redis.manager.config;
 
+import redis.clients.jedis.JedisPoolConfig;
+
 public class RedisConfig {
 
 //    public static final class Name {
@@ -67,7 +69,7 @@ public class RedisConfig {
     //https://polycrystal.org/posts/2012-05-25-active-record-connection-pool-fairness.html#:~:text=A%20connection%20pool%20is%20fair,connection%2C%20jumping%20ahead%20in%20line.
     private Boolean fairness;
 
-    // cách pool chọn idle connection để trare về, nếu là lifo = true thì sẽ là càng mới sẽ được trả về càng sớm
+    // cách pool chọn idle connection để tra về, nếu là lifo = true thì sẽ là càng mới sẽ được trả về càng sớm
     // còn nếu  = false thì sẽ là fifo thì trả về thằng cũ nhất.
     // https://stackoverflow.com/questions/14937939/apache-commons-pool-lifo-vs-fifo
     private Boolean lifo;
@@ -75,6 +77,7 @@ public class RedisConfig {
     private Boolean sentinel = false;
     private String redisMaster = "redismaster";
     private String name;
+    private Integer connectionTimeout;
 
     public String getIp() {
         return ip;
@@ -238,6 +241,37 @@ public class RedisConfig {
 
     public void setLifo(Boolean lifo) {
         this.lifo = lifo;
+    }
+
+    public Integer getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    public void setConnectionTimeout(Integer connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public JedisPoolConfig toJedisPoolConfig() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        if(lifo != null) jedisPoolConfig.setLifo(lifo);
+        if(blockWhenExhausted != null) jedisPoolConfig.setBlockWhenExhausted(blockWhenExhausted);
+//        if( != null) jedisPoolConfig.setEvictionPolicy();
+//        if( != null) jedisPoolConfig.setEvictorShutdownTimeoutMillis();
+        if(fairness != null) jedisPoolConfig.setFairness(fairness);
+        if(maxIdle != null) jedisPoolConfig.setMaxIdle(maxIdle);
+        if(maxTotal != null) jedisPoolConfig.setMaxTotal(maxTotal);
+        if(maxWaitMillis != null) jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        if(minEvictableIdleTimeMillis != null) jedisPoolConfig.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+        if(minIdle != null) jedisPoolConfig.setMinIdle(minIdle);
+        if(numberTestsPerEvictionRun != null) jedisPoolConfig.setNumTestsPerEvictionRun(numberTestsPerEvictionRun);
+//        if( != null) jedisPoolConfig.setSoftMinEvictableIdleTimeMillis();
+        if(testOnBorrow != null) jedisPoolConfig.setTestOnBorrow(testOnBorrow);
+//        if( != null) jedisPoolConfig.setTestOnCreate();
+        if(testOnReturn != null) jedisPoolConfig.setTestOnReturn(testOnReturn);
+        if(testWhileIdle != null) jedisPoolConfig.setTestWhileIdle(testWhileIdle);
+        if(timeBetweenEvictionRunsMillis != null) jedisPoolConfig.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+
+        return jedisPoolConfig;
     }
 }
 
